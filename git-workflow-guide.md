@@ -55,3 +55,59 @@ git commit -m "feat: Agregar autenticación de usuarios"
 git push origin feat/mi-rama
 
 ```
+
+# 4 Convencion de commits convencionales
+
+Es importante seguir una convencion de commits que permita a otros desarrolladores entender rapidamente el proposito de cada cambio. Aqui se muestran ejemplos de los diferentes tipos de commits:
+
+1. feat: Agrega una nueva funcion o caracteristica al proyecto.
+
+```bash
+git commit -m "feat: Agregar autenticación de usuarios"
+
+```
+
+2. fix: Corrige un error o bug en el codigo.
+```bash
+
+git commit -m "fix: Corregir error de desbordamiento de memoria"
+
+```
+3. docs: Realiza cambios o mejoras en la documentacion del proyecto.
+
+```bash
+git commit -m "docs: Actualizar el archivo README con instrucciones de instalación"
+
+```
+
+4. style: Realiza cambios en el formato o estilo del codigo, sin modificar su funcionamiento.
+```bash
+
+git commit -m "style: Aplicar sangría consistente en el archivo main.js"
+
+```
+5. refactor: Realiza cambios en el codigo para mejorar su estructura o legibilidad, sin cambiar su comportamiento
+```bash
+git commit -m "refactor: Reorganizar funciones de validación en un módulo separado"
+
+```
+6. test: Agrega o modifica pruebas unitarias o de integracion.
+
+```bash
+
+git commit -m "refactor: Reorganizar funciones de validación en un módulo separado"
+
+```
+
+7. chore: Realiza tareas de mantenimiento, actualizacion de dependencias, etc.
+
+```bash
+git commit -m "chore: Actualizar biblioteca de gráficos a la última versión"
+
+
+```
+## Licencia
+
+Este proyecto está protegido por fernandoDev.
+
+© 2024 Fernando Blanco. Todos los derechos reservados.
