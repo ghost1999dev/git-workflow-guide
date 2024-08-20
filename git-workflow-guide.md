@@ -56,7 +56,7 @@ git push origin feat/mi-rama
 
 ```
 
-# 4 Convencion de commits convencionales
+# 4. Convencion de commits convencionales
 
 Es importante seguir una convencion de commits que permita a otros desarrolladores entender rapidamente el proposito de cada cambio. Aqui se muestran ejemplos de los diferentes tipos de commits:
 
