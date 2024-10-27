@@ -34,10 +34,25 @@ Ref: user.id < follows.followed
 
 ```
 
-## Mongoose model
+## Connection 
 
 ```
+const mongoose = require('mongoose')
 
+const connection = async()=>{
+  try {
+    await mongoose.connect("mongodb://127.0.0.1:27017/social-media")
+
+  }catch(error){
+    
+  }
+}
+module.exports ={
+  connection
+}
+```
+## Mongoose model
+```
 const {Schema, model}= require("mongoose")
 
 const UserSchema = Schema({
