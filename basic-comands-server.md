@@ -69,3 +69,136 @@ app.listen(app.get('port'))
 console.log('Server listening in port ')
 
 ```
+## Create an user
+
+```
+npm install @types/bcrypt --save-dev
+```
+```
+async userRegister(req:Request,res:Response){
+        try {
+            const {
+                name,
+                surname,
+                password,
+                email
+            }=req.body
+
+            let newUser={
+                name,
+                surname,
+                password,
+                email
+            }
+            
+            const userData=await User.findOne({
+                name:newUser.name,
+                email:newUser.email
+            })
+            if (userData) {
+                res.status(200).send({
+                    message:"The user was registered"
+                })
+            }
+            const hashes=bcrypt.hashSync(newUser.password,10)
+            newUser.password=hashes
+
+            const dataResponse = new User(newUser)
+            await dataResponse.save()
+            
+            res.send({
+                status:200,
+                message:"User registerd succesfull",
+                dataResponse
+            })
+        } catch (error) {
+            res.send({
+                status:400,
+                message:"Process failed",
+                
+            })
+        }        
+     }
+```
+## Create token
+
+```
+import jwt from "jwt-simple";
+import moment from "moment"
+
+const SECRET_KEY = "SPUTNIK_DEVELOPER"
+export interface UserToken {
+    _id:string,
+    name:string,
+    surname:string,
+    email:string,
+    role:string,
+    image:string,
+    iat?:number,
+    ex?:number
+}
+const createToken =(user:UserToken)=>{
+    const payload ={
+        id:user._id,
+        name:user.name,
+        surname:user.surname,
+    
+        email:user.email,
+        role:user.role,
+        image:user.image,
+        iat:moment().unix(),
+        ex:moment().add(30,"days").unix
+    }
+    return jwt.encode(payload,SECRET_KEY)
+}
+export default{
+    createToken,
+    
+}
+
+```
+## Create login
+
+```
+async userLogin(req:Request,res:Response){
+        try {
+            const{
+                name
+            }=req.body
+
+            const userData=await User.findOne({name:name})
+            if (!userData) {
+                res.send({
+                    status:false,
+                    message:"User not found"
+                })
+                return
+            }
+            const userDataToken: UserToken={
+                _id:userData.id,
+                name:userData.name,
+                surname:userData.surname,
+                email:userData.email,
+                role:userData.role,
+                image:userData.image,
+                
+            }
+            
+            const jwtData=jwt.createToken(userDataToken)
+            res.send({
+                status:true,
+                success:"succesfull",
+                user:userData,
+                token:jwtData
+            })
+        } catch (error) {
+            res.status(400).send({
+                status:false,
+                message:"Error ",
+                error
+            })
+        }
+     }
+     ```
+
+
