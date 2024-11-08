@@ -199,6 +199,54 @@ async userLogin(req:Request,res:Response){
             })
         }
      }
-     ```
+```
+
+## Create authentication
+
+```
+//Import modules
+import jwt from "jwt-simple";
+import moment from "moment"
+import { Request,Response,NextFunction } from "express";
+//Import secret key
+import jwtService from "../services/jwt";
+import { SECRET_KEY } from "../services/jwt";
+
+//Authentication function
+const auth=(req:Request & {user?:any},res:Response,next:NextFunction)=>{
+    if (!req.headers.authorization) {
+        res.status(403).send({
+            status:false,
+            message:"The request haven't the authentication header"
+        })
+        return
+    }  
+    try {
+        let token = req.headers.authorization.replace(/['"]+/g, '')
+        let payload = jwt.decode(token,SECRET_KEY)
+        if (payload.ex <= moment().unix()) {
+            res.status(401).send({
+                status:false,
+                message:"Token expired"
+            })
+            return
+        }
+        req.user=payload
+        next()
+
+    } catch (error) {
+        res.status(404).send({
+            status:false,
+            message:"Invailable token",
+            error
+        })
+    }
+
+}
+export default{
+    auth
+}
+```
+
 
 
