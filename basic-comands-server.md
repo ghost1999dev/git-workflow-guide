@@ -247,6 +247,88 @@ export default{
     auth
 }
 ```
+### Create getUserById , getAllUser, updateUser
 
+```async getUserById(req:AuthenticateRequest,res:Response){
+        try {
+            const{id}=req.params
+            const data = await User.findById(id)
+            .select('-password -created_at -__v')
+            res.send({
+                status:true,
+                message:"Private test",
+                data
+               
+            })
+        } catch (error) {
+            res.status(404).send({
+                status:false,
+                message:"Error",
+                error
+            })
+        }
+     }
+     async userList(req:Request,res:Response){
+        try {
+            const page =Number(req.params.page) || 1
+            const limit =Number(req.params.limit) || 4
+            const skip = (page - 1) * limit
+            const data = await User.find().skip(skip).limit(limit).select('-password -created_at -__v')
+            const totalDocuments = await User.countDocuments()
+            //Division 
+            const totalPages = Math.ceil(totalDocuments / limit)
+            res.send({
+                status:true,
+                data,
+                currentPage:page,
+                totalPage:totalPages,
+                totalDocuments:totalDocuments
+            })
+        } catch (error) {
+            res.status(404).send({
+                status:false,
+                message:"Error",
+                error
+            })
+        }
+     }
+
+     async updateUser(req:AuthenticateRequest,res:Response){
+        try {
+            const userIdentity = req.user
+            const userBody = req.body  
+            let condition = false
+            const findData = await User.find({
+                name:userBody.name,
+                email:userBody.email
+            })
+            
+            findData.forEach((element:any)=>{
+                if (element._id !=userIdentity.id) {
+                    condition=true 
+                }
+                
+            })
+
+            if (condition) {
+                res.send({
+                    status:true,
+                    message:"The user already exist"
+                })
+                return
+            }
+
+            //Encrypt the password
+            //Update user
+            
+            
+            res.send({
+                findData
+            })
+        } catch (error) {
+            
+        }
+     }
+     ```
 
 
